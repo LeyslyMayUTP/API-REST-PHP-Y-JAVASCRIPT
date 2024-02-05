@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRÁCTICA 4 JS</title>
+    <link rel="stylesheet" href="css/style.css">
+    <h1 style="text-align: center;">LABORATORIO DE MAC UTP</h1>
+</head>
+<body>
+    <!-- Aquí se generarán los ordenadores ingresados 
+    en el input de acuerdo a la BD ----- 04 de febrero de 2024-->
+    <label for="pcId">Mostrar Pc's:</label>
+    <input type="text" id="pcId">
+    <button onclick="funMostrarPc()">Filtrar</button>
+    <button onclick="funAcomodarPcs()">Acomodar</button>
+    <div id="pcImage"></div>
+    <div id="totals">Totales Disponibles: 0 | Totales Fuera de Servicio: 0</div>
+
+    <script src="js/api.js"></script>
+    <script src="js/contador.js"></script>
+    <script src="js/funciones.js"></script>
+</body>
+</html>

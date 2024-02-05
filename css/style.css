@@ -1,0 +1,70 @@
+/*  Estilos de la P2*/
+.clsComputadora {
+    width: 100px;
+    height: 100px;
+    cursor: pointer; 
+    }
+
+.clsSeparador {
+    margin: 20px;
+}
+
+/* Estilos de la P3 */
+img {
+    width: 100px;
+    height: 100px;
+    margin-right: 10px; 
+    cursor: pointer;
+}
+
+.clsOculto {
+    display: none;
+}
+
+.clsFila {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* Estilos de la P4 */
+.pc-container {
+    display: inline-block;
+    margin: 10px;
+    position: relative;
+}
+
+.pc-info-card {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #fff;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+#totals {
+    margin-top: 20px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.pc-info-card {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #fff;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+.fila {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.fila .pc-container {
+    margin: 5px;
+}
