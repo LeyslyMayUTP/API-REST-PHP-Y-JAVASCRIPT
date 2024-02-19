@@ -55,9 +55,16 @@ class clsMainController{
     }
 
     private function funHandlePutRequest(){
-        $id_pc = $_GET['id_Pc'];
-        $datos_put = json_decode(file_get_contents("php://input"), true);
-        $this->funPutUpdatePc($id_pc, $datos_put);
+        $input = json_decode(file_get_contents('php://input'), true);
+    
+        /* Verificar si se proporcionó un ID de PC en la solicitud
+        ----- 13 de febrero de 2024*/
+        if(isset($_GET['id_Pc'])) {
+            $id_pc = $_GET['id_Pc'];
+            $this->funPutUpdatePc($id_pc, $input);
+        } else {
+            echo json_encode(["error" => "Falta el ID de la PC"]);
+        }
     }
 
     private function funHandleDeleteRequest(){

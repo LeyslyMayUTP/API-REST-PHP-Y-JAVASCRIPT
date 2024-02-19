@@ -89,48 +89,46 @@ class clsPcModel{
         }
     }
 
-    //Función para editar o actualizar los atributos de un dato de la base de datos
+    //PRACTICA 5
+    /*Función para editar o actualizar los atributos de un dato de la base de datos 
+    ----- 13 de febrero de 2024*/
     public function funPutUpdatePc($id_pc, $datos_put){
         // Validar que se han proporcionado datos para actualizar
         if (empty($datos_put)) {
             return ["error" => "No se proporcionaron datos para actualizar"];
         }
-
+    
         // Verificar si el campo 'estado' está presente en los datos PUT
         if (isset($datos_put['estado'])) {
             $estado = $datos_put['estado'];
-
+    
             // Construir la consulta de actualización para el campo 'estado' en la tabla 'estado'
             $sql_estado = "UPDATE estado SET estado = '$estado' WHERE id_Estado = (
                 SELECT id_Estado FROM pc WHERE id_Pc = $id_pc
             )";
-
+    
             $resultado_estado = $this->conexion->query($sql_estado);
-
+    
             if (!$resultado_estado) {
                 return ["error" => "Error al actualizar el campo 'estado' en la tabla 'estado'"];
             }
         }
-
-        // Construir la consulta de actualización para otros campos en la tabla 'pc'
-        $actualizaciones = array();
-        foreach ($datos_put as $campo => $valor) {
-            if ($campo !== 'estado') {
-                $actualizaciones[] = "pc.$campo = '$valor'";
+    
+        // Verificar si el campo 'imagen' está presente en los datos PUT
+        if (isset($datos_put['imagen'])) {
+            $imagen = $datos_put['imagen'];
+    
+            // Construir la consulta de actualización para el campo 'imagen' en la tabla 'pc'
+            $sql_imagen = "UPDATE pc SET imagen = '$imagen' WHERE id_Pc = $id_pc";
+    
+            $resultado_imagen = $this->conexion->query($sql_imagen);
+    
+            if (!$resultado_imagen) {
+                return ["error" => "Error al actualizar el campo 'imagen' en la tabla 'pc'"];
             }
         }
-
-        $sql_pc = "UPDATE pc
-                   SET " . implode(", ", $actualizaciones) . " 
-                   WHERE pc.id_Pc = $id_pc";
-
-        $resultado_pc = $this->conexion->query($sql_pc);
-
-        if ($resultado_pc) {
-            return ["mensaje" => "Registro actualizado correctamente"];
-        } else {
-            return ["error" => "Error al actualizar el registro en la tabla 'pc'"];
-        }
+    
+        return ["mensaje" => "Registro actualizado correctamente"];
     }
 
     //Función para eliminar un dato en la base de datos

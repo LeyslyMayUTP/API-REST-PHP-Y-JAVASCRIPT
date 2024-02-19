@@ -37,6 +37,11 @@ function funMostrarImagenes(pcsData, cantidadPcs) {
         pcContainer.className = 'pc-container';
         pcContainer.setAttribute('data-id', pcsData[i].id_Pc);
 
+        //PRACTICA 5 
+        /* Se le asigno a la constante un atributo para llamar al id de
+        estado de los ordenadores ----- 13 de febrero de 2024 */
+        pcContainer.setAttribute('data-estado', pcsData[i].estado);
+
         const imagen = document.createElement('img');
         imagen.src = pcsData[i].estado === 'Disponible' ? 'img/ordenador1.png' : 'img/ordenador.png';
         imagen.alt = `PC ${pcsData[i].id_Pc}`;
@@ -61,6 +66,11 @@ function funMostrarImagenes(pcsData, cantidadPcs) {
         pcContainer.addEventListener('mouseover', () => funMostrarDatosPc(pcInfoCard));
         pcContainer.addEventListener('mouseout', () => funOcultarDatosPc(pcInfoCard));
 
+        //PRACTICA 5
+        /* Se agrego un evento para cambair el estado y la imagen de los ordenadores
+        al darle clic. ----- 13 de febrero de 2024*/
+        pcContainer.addEventListener('click', () => funCambiarEstadoPC(pcsData[i].id_Pc, pcContainer));
+
         pcImageDiv.appendChild(pcContainer);
 
         // Actualizar el contador
@@ -73,6 +83,59 @@ function funMostrarImagenes(pcsData, cantidadPcs) {
 
     // Mostrar totales
     funUpdateTotals(disponibles, fueraDeServicio);
+}
+
+//PRACTICA 5
+/* Se creo una función para actualizar el estado de los ordenadores
+----- 13 de febrero de 2024*/
+function funCambiarEstadoPC(id_pc, pcContainer) {
+    // Verificar que el contenedor de imagen tenga los atributos necesarios
+    if (!pcContainer || !pcContainer.hasAttribute('data-id') || !pcContainer.hasAttribute('data-estado')) {
+        console.error('Error: El contenedor de imagen no tiene los atributos necesarios.');
+        return;
+    }
+
+    // Obtener el estado actual del contenedor de la imagen
+    const estadoActual = pcContainer.getAttribute('data-estado');
+
+    // Determinar el nuevo estado
+    const nuevoEstado = estadoActual === 'Disponible' ? 'Fuera de Servicio' : 'Disponible';
+
+    // Actualizar el estado en el contenedor de la imagen
+    pcContainer.setAttribute('data-estado', nuevoEstado);
+
+    // Obtener la imagen dentro del contenedor
+    const imagen = pcContainer.querySelector('img');
+
+    // Verificar que se encontró la imagen
+    if (!imagen) {
+        console.error('Error: No se encontró la imagen dentro del contenedor.');
+        return;
+    }
+
+    // Determinar la nueva imagen
+    const nuevaImagen = nuevoEstado === 'Disponible' ? 'img/ordenador1.png' : 'img/ordenador.png';
+
+    // Actualizar la imagen
+    imagen.src = nuevaImagen;
+
+    // Enviar solicitud PUT a la API REST para actualizar el estado en la base de datos
+    fetch(`http://localhost/P4JS_MayLeysly_ITI8A/api/index.php?id_Pc=${id_pc}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            estado: nuevoEstado
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            console.error(data.error);
+        }
+    })
+    .catch(error => console.error('Error:', error));
 }
 
 function funMostrarDatosPc(pcInfoCard) {
