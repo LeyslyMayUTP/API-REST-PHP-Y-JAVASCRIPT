@@ -68,3 +68,47 @@ img {
 .fila .pc-container {
     margin: 5px;
 }
+
+
+/*Estilos de la practica 6*/
+.contenedor-izquierda {
+    float: left;
+    width: 50%;
+}
+
+.contenedor-derecha {
+    float: right;
+    width: 50%;
+}
+
+.mesa {
+    position: relative;
+    width: 350px;
+    height: 200px;
+    border: 1px solid white;
+    margin: 10px;
+}
+
+.mesa img {
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+    position: absolute;
+}
+
+.contenedor{
+    margin: 0 auto;
+    width: 30%;
+    height: 36px;
+    border-radius: 8px;
+}
+
+.contenedorPc{
+    margin: 8px 8px;
+    padding: 14px 14px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 20px;
+    justify-content: center;
+}
+

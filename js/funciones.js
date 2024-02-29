@@ -48,6 +48,57 @@ function funMostrarImagenes(pcsData, cantidadPcs) {
         imagen.width = 100;
         imagen.height = 100;
 
+
+        //PRACTICA 6
+        /* Se le asigna el evento mousedown al contenedor de la imagen, con el fin 
+        de prepararla para moverla al momento de presionar el boton del mouse. También 
+        se asigna la distancia del mouse tanto horizontal como vertical. 
+        ----- 19 de febrero de 2024*/
+        pcContainer.addEventListener('mousedown', function(){
+            let shiftX = event.clientX - pcContainer.getBoundingClientRect().left;
+            let shiftY = event.clientY - pcContainer.getBoundingClientRect().top;
+
+            /* Absolute nos permite posicionar en cualquier parte del DOM al contenedor 
+            y zIndex nos permite posicionarlo sobre otros elementos.
+            ----- 19 de febrero de 2024*/
+            pcContainer.style.position = 'absolute';
+            pcContainer.style.zIndex = 1000;
+            document.body.append(pcContainer);
+
+            moveAt(event.pageX, event.pageY);
+
+            /* Función que ctualiza las coordenadas del contenedor en función de las 
+            coordenadas del mouse. ----- 19 de febrero de 2024*/
+            function moveAt(pageX, pageY){
+                pcContainer.style.left = pageX - shiftX + 'px';
+                pcContainer.style.top = pageY - shiftY + 'px';
+            }
+
+            /* Función que se ejecuta cuando se mueve el mouse. Esta función llama 
+            a funMoveAt() con las coordenadas actuales del mouse. ----- 19 de febrero 
+            de 2024*/
+            function onMouseMove(event){
+                moveAt(event.pageX, event.pageY);
+            }
+
+            document.addEventListener('mousemove', onMouseMove);
+
+            /* Se le asigna al contenedor el evento onmouseup que permite que se
+            detenga el arrastre cuando se suelta el botón del mouse. -----
+            19 de febrero de 2024 */
+            pcContainer.onmouseup = function(){
+                document.removeEventListener('mousemove', onMouseMove);
+                pcContainer.onmouseup = null;
+                funCambiarEstadoPC(pcsData[i].id_Pc, pcContainer);
+            };
+        });
+
+        /* Esto evita que el navegador realice acciones predeterminadas relacionadas 
+        con el arrastre del contenedor. ----- 19 de febrero de 2024 */
+        pcContainer.ondragstart = function(){
+            return false;
+        };
+
         const pcInfoCard = document.createElement('div');
         pcInfoCard.className = 'pc-info-card';
         pcInfoCard.innerHTML = `
@@ -67,9 +118,15 @@ function funMostrarImagenes(pcsData, cantidadPcs) {
         pcContainer.addEventListener('mouseout', () => funOcultarDatosPc(pcInfoCard));
 
         //PRACTICA 5
-        /* Se agrego un evento para cambair el estado y la imagen de los ordenadores
+        /* Se agrego un evento para cambiar el estado y la imagen de los ordenadores
         al darle clic. ----- 13 de febrero de 2024*/
-        pcContainer.addEventListener('click', () => funCambiarEstadoPC(pcsData[i].id_Pc, pcContainer));
+        pcContainer.addEventListener('click', (event) => {
+            // Evitar que el clic en la imagen active el arrastre
+            event.stopPropagation();
+            
+            // Llamar a la función para cambiar el estado de la PC
+            funCambiarEstadoPC(pcsData[i].id_Pc, pcContainer);
+        });
 
         pcImageDiv.appendChild(pcContainer);
 
